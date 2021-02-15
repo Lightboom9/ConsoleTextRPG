@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SharpLabProject.Skills;
 
 namespace SharpLabProject.Characters
@@ -53,6 +54,8 @@ namespace SharpLabProject.Characters
         public int FireResist { get; private set; }
         public int IceResist { get; private set; }
         public int AirResist { get; private set; }
+
+        public List<AbilityInfo> Skills { get; } = new List<AbilityInfo>();
 
         /// <summary>
         /// Creates a player with certain stats.

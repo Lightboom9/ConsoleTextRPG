@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using SharpLabProject.Characters;
 using SharpLabProject.Skills;
+using SharpLabProject.AppRendering;
 
 namespace SharpLabProject
 {
@@ -9,22 +12,15 @@ namespace SharpLabProject
     {
         static void Main(string[] args)
         {
+            Rendering.BeginRenderLoop();
+
             Player player = new Player(10, 10, 10, 10, 10, 10);
+            player.Skills.Add(AbilityInfo.Generate(10));
+            player.Skills.Add(AbilityInfo.Generate(10));
+            player.Skills.Add(AbilityInfo.Generate(10));
 
-            while (true)
-            {
-                if (!Console.KeyAvailable) Thread.Sleep(100);
-
-                if (Console.ReadKey(true).Key == ConsoleKey.Spacebar)
-                {
-                    Console.Clear();
-
-                    AbilityInfo info = AbilityInfo.Generate(10);
-
-                    Console.WriteLine(info.Name);
-                    Console.WriteLine(player.GetDescription(info));
-                }
-            }
+            SkillSelection menu = new SkillSelection(player);
+            Rendering.SetMenu(menu);
         }
     }
 }
