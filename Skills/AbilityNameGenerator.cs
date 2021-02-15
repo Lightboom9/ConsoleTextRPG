@@ -406,25 +406,25 @@ namespace SharpLabProject.Skills
                     {
                         case "Fire":
                         {
-                            name += GetFireBeaut().ToLower();
+                            name += GetFireMainName().ToLower();
 
                             break;
                         }
                         case "Air":
                         {
-                            name += GetAirBeaut().ToLower();
+                            name += GetAirMainName().ToLower();
 
                             break;
                         }
                         case "Ice":
                         {
-                            name += GetIceBeaut().ToLower();
+                            name += GetIceMainName().ToLower();
 
                             break;
                         }
                         case "Pure":
                         {
-                            name += GetPureBeaut().ToLower();
+                            name += GetPureMainName().ToLower();
 
                             break;
                         }
@@ -435,9 +435,24 @@ namespace SharpLabProject.Skills
             return name;
         }
 
+        private static string GetSupportName()
+        {
+            Random rng = new Random();
+            int casesCount = 4;
+
+            switch (rng.Next(0, casesCount))
+            {
+                case 0: return "Rehab";
+                case 1: return "Quick heal";
+                case 2: return "Prayer";
+                case 3: return "Cure";
+                default: return null;
+            }
+        }
+
         public static string GenerateSupportName()
         {
-            return null;
+            return GetSupportName();
         }
     }
 }

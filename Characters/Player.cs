@@ -1,4 +1,5 @@
-﻿using SharpLabProject.Skills;
+﻿using System;
+using SharpLabProject.Skills;
 
 namespace SharpLabProject.Characters
 {
@@ -90,15 +91,94 @@ namespace SharpLabProject.Characters
         public int GetFireResist() => FireResist;
         public int GetIceResist() => IceResist;
         public int GetAirResist() => AirResist;
+        public float GetMagicMult() => Intelligence;
+        public float GetPhysicalMult() => Strength;
+
+        public void BeginFight()
+        {
+            Intelligence = BaseIntelligence;
+            Strength = BaseStrength;
+            Agility = BaseAgility;
+            Endurance = BaseEndurance;
+            Wits = BaseWits;
+            Wisdom = BaseWisdom;
+
+            BluntResist = BaseBluntResist;
+            CutResist = BaseCutResist;
+            PiercingResist = BasePiercingResist;
+            FireResist = BaseFireResist;
+            IceResist = BaseIceResist;
+            AirResist = BaseAirResist;
+        }
 
         public void Act(IUnit target)
         {
 
         }
 
-        public void ReceiveAttack(AbilityAttack attack)
+        public void ReceiveAttack(IUnit attacker, AbilityAttack attack)
         {
+            switch (attack.type)
+            {
+                case DamageType.Pure:
+                {
+                    Health -= attack.GetDamage(attacker.GetMagicMult());
 
+                    break;
+                }
+                case DamageType.Fire:
+                {
+                    Health -= (int) Math.Round(attack.GetDamage(attacker.GetMagicMult()) / Math.Sqrt(FireResist));
+
+                    break;
+                }
+                case DamageType.Ice:
+                {
+                    Health -= (int)Math.Round(attack.GetDamage(attacker.GetMagicMult()) / Math.Sqrt(IceResist));
+
+                    break;
+                }
+                case DamageType.Air:
+                {
+                    Health -= (int)Math.Round(attack.GetDamage(attacker.GetMagicMult()) / Math.Sqrt(AirResist));
+
+                    break;
+                }
+                case DamageType.Blunt:
+                {
+                    Health -= (int)Math.Round(attack.GetDamage(attacker.GetPhysicalMult()) / Math.Sqrt(BluntResist));
+
+                    break;
+                }
+                case DamageType.Cut:
+                {
+                    Health -= (int)Math.Round(attack.GetDamage(attacker.GetPhysicalMult()) / Math.Sqrt(CutResist));
+
+                    break;
+                }
+                case DamageType.Piercing:
+                {
+                    Health -= (int)Math.Round(attack.GetDamage(attacker.GetPhysicalMult()) / Math.Sqrt(PiercingResist));
+
+                    break;
+                }
+            }
+        }
+
+        public string GetDescription(AbilityInfo info)
+        {
+            string desc = info.Description;
+
+            for (int i = 0; i < info.Attacks.Length; i++)
+            {
+                string oldStr = $"[Atk{i+1}]";
+                int multStat = (int) info.Attacks[i].type < 3 ? BaseStrength : BaseIntelligence;
+                string newStr = $"{info.Attacks[i].GetLowerDamage(multStat)}-{info.Attacks[i].GetHigherDamage(multStat)}";
+
+                desc = desc.Replace(oldStr, newStr);
+            }
+
+            return desc;
         }
     }
 }

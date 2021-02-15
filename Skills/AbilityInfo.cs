@@ -10,8 +10,8 @@ namespace SharpLabProject.Skills
         public AbilityAttack[] Attacks { get; private set; }
         public int Healing { get; private set; }
 
-        public float Accuracy { get; private set; }
-        public float CritChance { get; private set; }
+        public int AverageAccuracy { get; private set; }
+        public int AverageCritChance { get; private set; }
 
         public int ManaCost { get; private set; }
         public int HealthCost { get; private set; }
@@ -31,8 +31,8 @@ namespace SharpLabProject.Skills
 
             luck = Math.Clamp(luck, -1, 1);
             luck *= rng.Next(4, 6);
-            float low = 75;
-            float high = 125;
+            float low = min;
+            float high = max;
 
             if (luck > 0)
             {
@@ -105,9 +105,9 @@ namespace SharpLabProject.Skills
                 description += $"Heals caster for [Heal].";
             }
 
-            if (info.CritChance >= 10)
+            if (info.AverageCritChance >= 10)
             {
-                if (info.CritChance >= 20)
+                if (info.AverageCritChance >= 20)
                 {
                     description += " Very high crit chance.";
                 }
@@ -116,9 +116,9 @@ namespace SharpLabProject.Skills
                     description += " High crit chance.";
                 }
             }
-            if (info.Accuracy >= 110)
+            if (info.AverageAccuracy >= 110)
             {
-                if (info.Accuracy >= 140)
+                if (info.AverageAccuracy >= 140)
                 {
                     description += " Very high accuracy.";
                 }
@@ -152,41 +152,511 @@ namespace SharpLabProject.Skills
         {
             Random rng = new Random();
 
-            bool magic = rng.Next(0, 2) == 0;
-            float luck = 0;
-
-            float power = 0;
-            float crit = 0;
-            float accuracy = 0;
-            DamageType type = (DamageType)rng.Next(0, 6);
-
-            // 0-6 default, 7-8 success, 9-10 failure, 11-13 unstable
-            int randomCase = rng.Next(0, 14);
-
-            if (randomCase <= 6)
+            int attackCount = rng.Next(0, 41);
+            if (attackCount <= 30)
             {
-                luck += rng.Next(-5, 6) / 100f;
+                attackCount = 1;
             }
             else
             {
-                if (randomCase <= 8)
+                if (attackCount <= 38)
                 {
-
+                    attackCount = 2;
                 }
                 else
                 {
-                    if (randomCase <= 10)
-                    {
-
-                    }
-                    else
-                    {
-
-                    }
+                    attackCount = 3;
                 }
             }
 
-            return null;
+            AbilityAttack[] attacks = new AbilityAttack[attackCount];
+
+            float totalAccuracy = 0;
+            float totalCrit = 0;
+            float totalHealthCost = 0;
+            float totalManaCost = 0;
+
+            for (int i = 0; i < attackCount; i++)
+            {
+                bool magic = rng.Next(0, 2) == 0;
+                float luck = 0;
+
+                float power = 0;
+                float crit = 0;
+                float accuracy = 0;
+                float healthCost = 0;
+                float manaCost = 0;
+                DamageType type = magic ? (DamageType) rng.Next(3, 6) : (DamageType) rng.Next(0, 2);
+
+
+                // 0=power-accuracy-crit, 1=power-crit-accuracy, 2=crit-power-accuracy, 3=accuracy-crit-power
+                int order = rng.Next(0, 4);
+
+                // 0-6 default, 7-8 success, 9-10 failure, 11-13 unstable
+                int randomCase = rng.Next(0, 14);
+
+                if (randomCase <= 6)
+                {
+                    switch (order)
+                    {
+                        case 0:
+                        {
+                            luck += rng.Next(-5, 6) / 100f;
+                            power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                            if (magic)
+                            {
+                                luck += rng.Next(-5, 6) / 100f;
+                                accuracy = GenerateStat(luck, 90, 100);
+
+                                luck += rng.Next(-5, 6) / 100f;
+                                crit = GenerateStat(luck, 90, 110) / 25f;
+                            }
+                            else
+                            {
+                                luck += rng.Next(-5, 6) / 100f;
+                                accuracy = GenerateStat(luck, 70, 130);
+
+                                luck += rng.Next(-5, 6) / 100f;
+                                crit = GenerateStat(luck, 30, 150) / 10f;
+                            }
+
+                            break;
+                        }
+                        case 1:
+                        {
+                            luck += rng.Next(-5, 6) / 100f;
+                            power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                            if (magic)
+                            {
+                                luck += rng.Next(-5, 6) / 100f;
+                                crit = GenerateStat(luck, 90, 110) / 25f;
+
+                                luck += rng.Next(-5, 6) / 100f;
+                                accuracy = GenerateStat(luck, 90, 100);
+                            }
+                            else
+                            {
+                                luck += rng.Next(-5, 6) / 100f;
+                                crit = GenerateStat(luck, 30, 150) / 10f;
+
+                                luck += rng.Next(-5, 6) / 100f;
+                                accuracy = GenerateStat(luck, 70, 130);
+                            }
+
+                            break;
+                        }
+                        case 2:
+                        {
+                            if (magic)
+                            {
+                                luck += rng.Next(-5, 6) / 100f;
+                                crit = GenerateStat(luck, 90, 110) / 25f;
+
+                                luck += rng.Next(-5, 6) / 100f;
+                                power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                                luck += rng.Next(-5, 6) / 100f;
+                                accuracy = GenerateStat(luck, 90, 100);
+                            }
+                            else
+                            {
+                                luck += rng.Next(-5, 6) / 100f;
+                                crit = GenerateStat(luck, 30, 150) / 10f;
+
+                                luck += rng.Next(-5, 6) / 100f;
+                                power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                                luck += rng.Next(-5, 6) / 100f;
+                                accuracy = GenerateStat(luck, 70, 130);
+                            }
+
+                            break;
+                        }
+                        case 3:
+                        {
+                            if (magic)
+                            {
+                                luck += rng.Next(-5, 6) / 100f;
+                                accuracy = GenerateStat(luck, 90, 100);
+
+                                luck += rng.Next(-5, 6) / 100f;
+                                crit = GenerateStat(luck, 90, 110) / 25f;
+                            }
+                            else
+                            {
+                                luck += rng.Next(-5, 6) / 100f;
+                                accuracy = GenerateStat(luck, 70, 130);
+
+                                luck += rng.Next(-5, 6) / 100f;
+                                crit = GenerateStat(luck, 30, 150) / 10f;
+                            }
+
+                            luck += rng.Next(-5, 6) / 100f;
+                            power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    if (randomCase <= 8)
+                    {
+                        switch (order)
+                        {
+                            case 0:
+                                {
+                                    luck += rng.Next(0, 16) / 100f;
+                                    power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                                    if (magic)
+                                    {
+                                        luck += rng.Next(0, 16) / 100f;
+                                        accuracy = GenerateStat(luck, 90, 100);
+
+                                        luck += rng.Next(0, 16) / 100f;
+                                        crit = GenerateStat(luck, 90, 110) / 25f;
+                                    }
+                                    else
+                                    {
+                                        luck += rng.Next(0, 16) / 100f;
+                                        accuracy = GenerateStat(luck, 70, 130);
+
+                                        luck += rng.Next(0, 16) / 100f;
+                                        crit = GenerateStat(luck, 30, 150) / 10f;
+                                    }
+
+                                    break;
+                                }
+                            case 1:
+                                {
+                                    luck += rng.Next(0, 16) / 100f;
+                                    power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                                    if (magic)
+                                    {
+                                        luck += rng.Next(0, 16) / 100f;
+                                        crit = GenerateStat(luck, 90, 110) / 25f;
+
+                                        luck += rng.Next(0, 16) / 100f;
+                                        accuracy = GenerateStat(luck, 90, 100);
+                                    }
+                                    else
+                                    {
+                                        luck += rng.Next(0, 16) / 100f;
+                                        crit = GenerateStat(luck, 30, 150) / 10f;
+
+                                        luck += rng.Next(0, 16) / 100f;
+                                        accuracy = GenerateStat(luck, 70, 130);
+                                    }
+
+                                    break;
+                                }
+                            case 2:
+                                {
+                                    if (magic)
+                                    {
+                                        luck += rng.Next(0, 16) / 100f;
+                                        crit = GenerateStat(luck, 90, 110) / 25f;
+
+                                        luck += rng.Next(0, 16) / 100f;
+                                        power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                                        luck += rng.Next(0, 16) / 100f;
+                                        accuracy = GenerateStat(luck, 90, 100);
+                                    }
+                                    else
+                                    {
+                                        luck += rng.Next(0, 16) / 100f;
+                                        crit = GenerateStat(luck, 30, 150) / 10f;
+
+                                        luck += rng.Next(0, 16) / 100f;
+                                        power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                                        luck += rng.Next(0, 16) / 100f;
+                                        accuracy = GenerateStat(luck, 70, 130);
+                                    }
+
+                                    break;
+                                }
+                            case 3:
+                                {
+                                    if (magic)
+                                    {
+                                        luck += rng.Next(0, 16) / 100f;
+                                        accuracy = GenerateStat(luck, 90, 100);
+
+                                        luck += rng.Next(0, 16) / 100f;
+                                        crit = GenerateStat(luck, 90, 110) / 25f;
+                                    }
+                                    else
+                                    {
+                                        luck += rng.Next(0, 16) / 100f;
+                                        accuracy = GenerateStat(luck, 70, 130);
+
+                                        luck += rng.Next(0, 16) / 100f;
+                                        crit = GenerateStat(luck, 30, 150) / 10f;
+                                    }
+
+                                    luck += rng.Next(0, 16) / 100f;
+                                    power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                                    break;
+                                }
+                        }
+                    }
+                    else
+                    {
+                        if (randomCase <= 10)
+                        {
+                            switch (order)
+                            {
+                                case 0:
+                                    {
+                                        luck += rng.Next(-5, 1) / 100f;
+                                        power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                                        if (magic)
+                                        {
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            accuracy = GenerateStat(luck, 90, 100);
+
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            crit = GenerateStat(luck, 90, 110) / 25f;
+                                        }
+                                        else
+                                        {
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            accuracy = GenerateStat(luck, 70, 130);
+
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            crit = GenerateStat(luck, 30, 150) / 10f;
+                                        }
+
+                                        break;
+                                    }
+                                case 1:
+                                    {
+                                        luck += rng.Next(-5, 1) / 100f;
+                                        power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                                        if (magic)
+                                        {
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            crit = GenerateStat(luck, 90, 110) / 25f;
+
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            accuracy = GenerateStat(luck, 90, 100);
+                                        }
+                                        else
+                                        {
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            crit = GenerateStat(luck, 30, 150) / 10f;
+
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            accuracy = GenerateStat(luck, 70, 130);
+                                        }
+
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        if (magic)
+                                        {
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            crit = GenerateStat(luck, 90, 110) / 25f;
+
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            accuracy = GenerateStat(luck, 90, 100);
+                                        }
+                                        else
+                                        {
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            crit = GenerateStat(luck, 30, 150) / 10f;
+
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            accuracy = GenerateStat(luck, 70, 130);
+                                        }
+
+                                        break;
+                                    }
+                                case 3:
+                                    {
+                                        if (magic)
+                                        {
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            accuracy = GenerateStat(luck, 90, 100);
+
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            crit = GenerateStat(luck, 90, 110) / 25f;
+                                        }
+                                        else
+                                        {
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            accuracy = GenerateStat(luck, 70, 130);
+
+                                            luck += rng.Next(-5, 1) / 100f;
+                                            crit = GenerateStat(luck, 30, 150) / 10f;
+                                        }
+
+                                        luck += rng.Next(-5, 1) / 100f;
+                                        power = GenerateStat(luck, 70, 130) / 100f * basePower;
+
+                                        break;
+                                    }
+                            }
+                        }
+                        else
+                        {
+                            switch (order)
+                            {
+                                case 0:
+                                    {
+                                        luck += rng.Next(-15, 16) / 100f;
+                                        power = GenerateStat(luck, 55, 145) / 100f * basePower;
+
+                                        if (magic)
+                                        {
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            accuracy = GenerateStat(luck, 80, 110);
+
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            crit = GenerateStat(luck, 75, 125) / 25f;
+                                        }
+                                        else
+                                        {
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            accuracy = GenerateStat(luck, 60, 140);
+
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            crit = GenerateStat(luck, 0, 200) / 10f;
+                                        }
+
+                                        break;
+                                    }
+                                case 1:
+                                    {
+                                        luck += rng.Next(-15, 16) / 100f;
+                                        power = GenerateStat(luck, 55, 145) / 100f * basePower;
+
+                                        if (magic)
+                                        {
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            crit = GenerateStat(luck, 75, 125) / 25f;
+
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            accuracy = GenerateStat(luck, 80, 110);
+                                        }
+                                        else
+                                        {
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            crit = GenerateStat(luck, 0, 200) / 10f;
+
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            accuracy = GenerateStat(luck, 60, 140);
+                                        }
+
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        if (magic)
+                                        {
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            crit = GenerateStat(luck, 75, 125) / 25f;
+
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            power = GenerateStat(luck, 55, 145) / 100f * basePower;
+
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            accuracy = GenerateStat(luck, 80, 110);
+                                        }
+                                        else
+                                        {
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            crit = GenerateStat(luck, 0, 200) / 10f;
+
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            power = GenerateStat(luck, 55, 145) / 100f * basePower;
+
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            accuracy = GenerateStat(luck, 60, 140);
+                                        }
+
+                                        break;
+                                    }
+                                case 3:
+                                    {
+                                        if (magic)
+                                        {
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            accuracy = GenerateStat(luck, 80, 110);
+
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            crit = GenerateStat(luck, 75, 125) / 25f;
+                                        }
+                                        else
+                                        {
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            accuracy = GenerateStat(luck, 60, 140);
+
+                                            luck += rng.Next(-15, 16) / 100f;
+                                            crit = GenerateStat(luck, 0, 200) / 10f;
+                                        }
+
+                                        luck += rng.Next(-15, 16) / 100f;
+                                        power = GenerateStat(luck, 55, 145) / 100f * basePower;
+
+                                        break;
+                                    }
+                            }
+                        }
+                    }
+                }
+
+                if (magic)
+                {
+                    manaCost = power / 10f * rng.Next(90, 110) / 10f * (1 + crit / 100f) * (accuracy / 100f);
+                }
+                else
+                {
+                    healthCost = power / 10f * rng.Next(90, 110) / 10f * (1 + crit / 100f) * (accuracy / 100f);
+                }
+
+                if (accuracy < 25) accuracy = 25f;
+                if (crit < 0) crit = 0;
+                if (power < 1) power = 1;
+
+                AbilityAttack attack = new AbilityAttack(type, (int)Math.Round(power), (int)Math.Round(accuracy), (int)Math.Round(crit));
+
+                totalAccuracy += accuracy;
+                totalCrit += crit;
+                totalHealthCost += healthCost;
+                totalManaCost += manaCost;
+
+                attacks[i] = attack;
+            }
+
+            totalHealthCost *= (float) Math.Pow(attackCount, 0.42);
+            totalManaCost *= (float)Math.Pow(attackCount, 0.42);
+
+            AbilityInfo info = new AbilityInfo();
+            info.Attacks = attacks;
+            info.HealthCost = (int)totalHealthCost;
+            info.ManaCost = (int)totalManaCost;
+            info.AverageAccuracy = (int)Math.Round(totalAccuracy / attackCount);
+            info.AverageCritChance = (int)Math.Round(totalCrit / attackCount);
+            GenerateSkillDescriptions(info);
+
+            return info;
         }
     }
 }

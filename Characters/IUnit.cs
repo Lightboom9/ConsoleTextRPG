@@ -7,6 +7,8 @@ namespace SharpLabProject.Characters
         public int GetHealth();
         public bool IsAlive();
         public int GetInitiative();
+        public float GetMagicMult();
+        public float GetPhysicalMult();
 
         public int GetBluntResist();
         public int GetCutResist();
@@ -16,6 +18,6 @@ namespace SharpLabProject.Characters
         public int GetAirResist();
 
         public void Act(IUnit opponent);
-        public void ReceiveAttack(AbilityAttack attack);
+        public void ReceiveAttack(IUnit attacker, AbilityAttack attack);
     }
 }

@@ -8,28 +8,25 @@ namespace SharpLabProject.Skills
         public int power;
         public int accuracy;
         public int crit;
-        public int multStat;
 
-        public int GetLowerDamage()
+        public int GetLowerDamage(float multStat)
         {
-            return (int) (multStat / 10f * power * 0.85f);
+            return (int) Math.Round(Math.Sqrt(multStat) * power * 0.85f);
         }
-        public int GetHigherDamage()
+        public int GetHigherDamage(float multStat)
         {
-            return (int) (multStat / 10f * power * 1.15f);
+            return (int) Math.Round(Math.Sqrt(multStat) * power * 1.15f);
         }
-        public int GetDamage()
+        public int GetDamage(float multStat)
         {
             Random rng = new Random();
-
-            return rng.Next(GetLowerDamage(), GetHigherDamage() + 1);
+            return rng.Next(GetLowerDamage(multStat), GetHigherDamage(multStat) + 1);
         }
 
-        public AbilityAttack(DamageType type, int power, int multStat, int accuracy, int crit)
+        public AbilityAttack(DamageType type, int power, int accuracy, int crit)
         {
             this.type = type;
             this.power = power;
-            this.multStat = multStat;
             this.accuracy = accuracy;
             this.crit = crit;
         }
