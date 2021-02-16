@@ -20,6 +20,8 @@ namespace ConsoleTextRPG.Characters
         public int Strength { get; protected set; }
         public int Wits { get; protected set; }
 
+        public int NextSelectedSkillToUse { get; set; } = -1;
+
         /// <summary>
         /// Creates a player with certain stats.
         /// </summary>
@@ -44,6 +46,21 @@ namespace ConsoleTextRPG.Characters
         public override void Act(Character[] targets)
         {
 
+        }
+
+        public void UseSelectedSkill(Character target)
+        {
+            if (NextSelectedSkillToUse == -1)
+            {
+                throw new ArgumentException("First, skill to use must be selected.");
+            }
+
+            foreach (var atk in Skills[NextSelectedSkillToUse].Attacks)
+            {
+                target.ReceiveAttack(this, atk);
+            }
+
+            NextSelectedSkillToUse = -1;
         }
 
         public string GetDescription(AbilityInfo info)

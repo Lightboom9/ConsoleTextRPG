@@ -13,17 +13,20 @@ namespace ConsoleTextRPG
     {
         static void Main(string[] args)
         {
-            //Rendering.BeginRenderLoop();
+            Rendering.BeginRenderLoop();
 
             Player player = new Player(10, 10, 10, 10, 10, 10);
-            RandomBattle battle = RandomBattle.Generate(8);
-            Character enemy = battle.Enemy;
+            player.Skills.Add(AbilityInfo.Generate(10));
+            player.Skills.Add(AbilityInfo.Generate(10));
+            player.Skills.Add(AbilityInfo.Generate(10));
 
-            Console.WriteLine("Enemy has " + enemy.Health + ". His skills are:");
-            foreach (var skill in enemy.Skills)
-            {
-                Console.WriteLine(skill.Description);
-            }
+            RandomEnemy enemy = RandomEnemy.Generate(10);
+
+            player.EnterFight();
+            enemy.EnterFight();
+
+            BattleMenu menu = new BattleMenu(player, enemy);
+            Rendering.SetActiveMenu(menu);
         }
     }
 }

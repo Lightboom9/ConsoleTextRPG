@@ -8,6 +8,8 @@ namespace ConsoleTextRPG.ConsoleRendering
         private Character _enemy;
         private Player _player;
 
+        public bool PlayerSelectedSkill { get; set; } = false;
+
         public BattleMenu(Player player, Character enemy)
         {
             _enemy = enemy;
@@ -19,7 +21,15 @@ namespace ConsoleTextRPG.ConsoleRendering
             };
             Actions[ConsoleKey.Spacebar] = () =>
             {
-                // Skill selection
+                OnReturnControl = () =>
+                {
+                    OnReturnControl = null;
+
+                    if (PlayerSelectedSkill) player.UseSelectedSkill(enemy);
+                };
+
+                SkillSelectionMenu menu = new SkillSelectionMenu(this, player);
+                Rendering.SetActiveMenu(menu);
             };
         }
 

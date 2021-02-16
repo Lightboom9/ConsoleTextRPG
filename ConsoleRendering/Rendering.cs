@@ -67,6 +67,8 @@ namespace ConsoleTextRPG.ConsoleRendering
         {
             _currentMenu = menu;
 
+            Console.Clear();
+
             Rerender();
         }
 
