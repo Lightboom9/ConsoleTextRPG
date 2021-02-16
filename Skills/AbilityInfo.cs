@@ -622,6 +622,8 @@ namespace ConsoleTextRPG.Skills
                     }
                 }
 
+                if (!magic) power *= 1.2f;
+
                 if (magic)
                 {
                     manaCost = power / 10f * rng.Next(90, 110) / 10f * (1 + crit / 100f) * (accuracy / 100f);

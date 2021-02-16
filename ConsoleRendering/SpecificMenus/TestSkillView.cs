@@ -3,13 +3,13 @@ using ConsoleTextRPG.Characters;
 
 namespace ConsoleTextRPG.ConsoleRendering
 {
-    public class SkillSelection : Menu
+    public class TestSkillView : Menu
     {
         private int _selectedSkill = 0;
 
         private Player _player;
 
-        public SkillSelection(Player player)
+        public TestSkillView(Player player)
         {
             _player = player;
 

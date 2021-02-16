@@ -5,6 +5,7 @@ using System.Threading;
 using ConsoleTextRPG.Characters;
 using ConsoleTextRPG.Skills;
 using ConsoleTextRPG.ConsoleRendering;
+using ConsoleTextRPG.GameEvents;
 
 namespace ConsoleTextRPG
 {
@@ -12,15 +13,12 @@ namespace ConsoleTextRPG
     {
         static void Main(string[] args)
         {
-            Rendering.BeginRenderLoop();
+            //Rendering.BeginRenderLoop();
 
             Player player = new Player(10, 10, 10, 10, 10, 10);
-            player.Skills.Add(AbilityInfo.Generate(10));
-            player.Skills.Add(AbilityInfo.Generate(10));
-            player.Skills.Add(AbilityInfo.Generate(10));
+            RandomBattle battle = RandomBattle.Generate(8);
 
-            SkillSelection menu = new SkillSelection(player);
-            Rendering.SetMenu(menu);
+
         }
     }
 }

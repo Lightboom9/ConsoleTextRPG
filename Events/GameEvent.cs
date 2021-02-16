@@ -1,7 +1,7 @@
-﻿namespace ConsoleTextRPG
+﻿namespace ConsoleTextRPG.GameEvents
 {
-    public class GameEvent
+    public abstract class GameEvent
     {
-        
+        public GameEventType Type { get; protected set; }
     }
 }

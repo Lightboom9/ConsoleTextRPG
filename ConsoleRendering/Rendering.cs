@@ -63,7 +63,7 @@ namespace ConsoleTextRPG.ConsoleRendering
             }
         }
 
-        public static void SetMenu(Menu menu)
+        public static void SetActiveMenu(Menu menu)
         {
             _currentMenu = menu;
 
