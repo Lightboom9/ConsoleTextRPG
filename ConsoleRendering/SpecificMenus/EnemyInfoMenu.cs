@@ -5,19 +5,42 @@ namespace ConsoleTextRPG.ConsoleRendering
 {
     public class EnemyInfoMenu : Menu
     {
-        private Character _enemy;
+        private RandomEnemy _enemy;
 
-        public EnemyInfoMenu(BattleMenu battleMenuParent, Character enemy) : base(battleMenuParent)
+        public EnemyInfoMenu(BattleMenu battleMenuParent, RandomEnemy enemy) : base(battleMenuParent)
         {
             _enemy = enemy;
 
-            Actions[ConsoleKey.Spacebar] = ReturnControl;
+            Actions[ConsoleKey.C] = Actions[ConsoleKey.Spacebar] = ReturnControl;
         }
 
         public override string Render()
         {
-            string str = "Enemy has " + _enemy.Health + " health and " + _enemy.Mana + " mana. He possesses " + _enemy.Skills.Count + " skills.\n\n";
+            string str = $"Enemy has {_enemy.Health} health and {_enemy.Mana} mana. They possess {_enemy.Skills.Count} skills.";
 
+            if (_enemy.Weaknesses.Length > 0)
+            {
+                str += "\nWeaknesses: ";
+                for (int i = 0; i < _enemy.Weaknesses.Length; i++)
+                {
+                    if (i > 0) str += ", ";
+                    str += _enemy.Weaknesses[i];
+                }
+                str += ".";
+            }
+
+            if (_enemy.Strengths.Length > 0)
+            {
+                str += "\nStrengths: ";
+                for (int i = 0; i < _enemy.Strengths.Length; i++)
+                {
+                    if (i > 0) str += ", ";
+                    str += _enemy.Strengths[i];
+                }
+                str += ".";
+            }
+
+            str += "\n\nPress [Space] or [C] to return.";
 
             return str;
         }

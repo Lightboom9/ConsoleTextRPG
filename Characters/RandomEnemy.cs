@@ -202,6 +202,9 @@ namespace ConsoleTextRPG.Characters
 
             RandomEnemy enemy = new RandomEnemy(health, mana, physPower, magePower, init, bluntRes, cutRes, piercingRes, fireRes, iceRes, airRes);
 
+            enemy.Strengths = descStrongs.ToArray();
+            enemy.Weaknesses = descWeaks.ToArray();
+
             int skillCount = rng.Next(1, 4);
             for (int i = 0; i < skillCount; i++) enemy.Skills.Add(AbilityInfo.Generate(enemyLevel));
 

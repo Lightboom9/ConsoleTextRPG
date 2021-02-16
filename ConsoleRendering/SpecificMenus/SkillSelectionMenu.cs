@@ -5,9 +5,11 @@ namespace ConsoleTextRPG.ConsoleRendering
 {
     public class SkillSelectionMenu : Menu
     {
+        private static int _cursorMemory = 0;
+
         private Player _player;
 
-        private int _selectedIndex = 0;
+        private int _selectedIndex = _cursorMemory;
 
         public SkillSelectionMenu(BattleMenu battleMenuParent, Player player) : base(battleMenuParent)
         {
@@ -17,6 +19,8 @@ namespace ConsoleTextRPG.ConsoleRendering
             {
                 player.NextSelectedSkillToUse = _selectedIndex;
                 battleMenuParent.PlayerSelectedSkill = true;
+
+                _cursorMemory = _selectedIndex;
 
                 ReturnControl();
             };

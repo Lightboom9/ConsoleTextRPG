@@ -5,19 +5,20 @@ namespace ConsoleTextRPG.ConsoleRendering
 {
     public class BattleMenu : Menu
     {
-        private Character _enemy;
+        private RandomEnemy _enemy;
         private Player _player;
 
         public bool PlayerSelectedSkill { get; set; } = false;
 
-        public BattleMenu(Player player, Character enemy)
+        public BattleMenu(Player player, RandomEnemy enemy)
         {
             _enemy = enemy;
             _player = player;
 
             Actions[ConsoleKey.Tab] = () =>
             {
-                // Enemy info.
+                EnemyInfoMenu menu = new EnemyInfoMenu(this, enemy);
+                Rendering.SetActiveMenu(menu);
             };
             Actions[ConsoleKey.Spacebar] = () =>
             {
@@ -25,7 +26,12 @@ namespace ConsoleTextRPG.ConsoleRendering
                 {
                     OnReturnControl = null;
 
-                    if (PlayerSelectedSkill) player.UseSelectedSkill(enemy);
+                    if (PlayerSelectedSkill)
+                    {
+                        player.UseSelectedSkill(enemy);
+
+                        PlayerSelectedSkill = false;
+                    }
                 };
 
                 SkillSelectionMenu menu = new SkillSelectionMenu(this, player);
