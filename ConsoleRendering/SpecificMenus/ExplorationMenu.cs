@@ -1,6 +1,6 @@
 ﻿namespace ConsoleTextRPG.ConsoleRendering
 {
-    public class Exploration : Menu
+    public class ExplorationMenu : Menu
     {
         
     }
