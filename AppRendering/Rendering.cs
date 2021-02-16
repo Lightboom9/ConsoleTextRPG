@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace SharpLabProject.AppRendering
+namespace SharpLabProject.ConsoleRendering
 {
     public static class Rendering
     {

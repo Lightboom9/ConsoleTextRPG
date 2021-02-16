@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SharpLabProject.AppRendering
+namespace SharpLabProject.ConsoleRendering
 {
     public abstract class Menu
     {

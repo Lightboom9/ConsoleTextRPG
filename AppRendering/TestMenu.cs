@@ -2,7 +2,7 @@
 using SharpLabProject.Characters;
 using SharpLabProject.Skills;
 
-namespace SharpLabProject.AppRendering
+namespace SharpLabProject.ConsoleRendering
 {
     public class TestMenu : Menu
     {

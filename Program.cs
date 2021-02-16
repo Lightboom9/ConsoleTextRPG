@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using SharpLabProject.Characters;
 using SharpLabProject.Skills;
-using SharpLabProject.AppRendering;
+using SharpLabProject.ConsoleRendering;
 
 namespace SharpLabProject
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using SharpLabProject.Characters;
 
-namespace SharpLabProject.AppRendering
+namespace SharpLabProject.ConsoleRendering
 {
     public class SkillSelection : Menu
     {
