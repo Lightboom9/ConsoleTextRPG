@@ -1,7 +1,7 @@
 ﻿using System;
-using SharpLabProject.Characters;
+using ConsoleTextRPG.Characters;
 
-namespace SharpLabProject.ConsoleRendering
+namespace ConsoleTextRPG.ConsoleRendering
 {
     public class SkillSelection : Menu
     {

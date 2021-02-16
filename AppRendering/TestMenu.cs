@@ -1,8 +1,8 @@
 ﻿using System;
-using SharpLabProject.Characters;
-using SharpLabProject.Skills;
+using ConsoleTextRPG.Characters;
+using ConsoleTextRPG.Skills;
 
-namespace SharpLabProject.ConsoleRendering
+namespace ConsoleTextRPG.ConsoleRendering
 {
     public class TestMenu : Menu
     {

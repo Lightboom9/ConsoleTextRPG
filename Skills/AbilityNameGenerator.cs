@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SharpLabProject.Skills
+namespace ConsoleTextRPG.Skills
 {
     public static class AbilityNameGenerator
     {

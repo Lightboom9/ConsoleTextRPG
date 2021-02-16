@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SharpLabProject.Skills
+namespace ConsoleTextRPG.Skills
 {
     public class AbilityInfo
     {

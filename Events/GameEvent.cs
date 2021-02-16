@@ -1,4 +1,4 @@
-﻿namespace SharpLabProject
+﻿namespace ConsoleTextRPG
 {
     public class GameEvent
     {

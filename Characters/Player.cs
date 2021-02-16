@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using SharpLabProject.Skills;
+using ConsoleTextRPG.Skills;
 
-namespace SharpLabProject.Characters
+namespace ConsoleTextRPG.Characters
 {
     public class Player : IUnit
     {

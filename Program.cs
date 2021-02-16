@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Text;
 using System.Threading;
-using SharpLabProject.Characters;
-using SharpLabProject.Skills;
-using SharpLabProject.ConsoleRendering;
+using ConsoleTextRPG.Characters;
+using ConsoleTextRPG.Skills;
+using ConsoleTextRPG.ConsoleRendering;
 
-namespace SharpLabProject
+namespace ConsoleTextRPG
 {
     class Program
     {

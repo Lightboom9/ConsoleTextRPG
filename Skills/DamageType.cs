@@ -1,4 +1,4 @@
-﻿namespace SharpLabProject.Skills
+﻿namespace ConsoleTextRPG.Skills
 {
     public enum DamageType
     {
