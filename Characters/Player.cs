@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConsoleTextRPG.ConsoleRendering;
 using ConsoleTextRPG.Skills;
 
 namespace ConsoleTextRPG.Characters
@@ -21,6 +22,8 @@ namespace ConsoleTextRPG.Characters
         public int Wits { get; protected set; }
 
         public int NextSelectedSkillToUse { get; set; } = -1;
+
+        private Character _lastTarget = null;
 
         /// <summary>
         /// Creates a player with certain stats.
@@ -50,7 +53,28 @@ namespace ConsoleTextRPG.Characters
 
         public override void EndTurn()
         {
+            if (_lastTarget == null) return;
 
+            Rendering.LockInput();
+
+            Console.Clear();
+
+            string damageInfo = _lastTarget.GetLastReceivedDamageInfo();
+            if (damageInfo != null)
+            {
+                Console.WriteLine("Enemy receives " + damageInfo + " damage.");
+            }
+            else
+            {
+                Console.WriteLine("Enemy doesn't receive any damage.");
+            }
+
+            Console.WriteLine("\nPress any key to continue.");
+            Console.ReadKey(true);
+
+            Rendering.Rerender(true);
+
+            Rendering.UnlockInput();
         }
 
         public void UseSelectedSkill(Character target)
@@ -60,12 +84,11 @@ namespace ConsoleTextRPG.Characters
                 throw new ArgumentException("First, skill to use must be selected.");
             }
 
-            foreach (var atk in Skills[NextSelectedSkillToUse].Attacks)
-            {
-                target.ReceiveAttack(this, atk);
-            }
+            UseSkill(Skills[NextSelectedSkillToUse], target);
 
             NextSelectedSkillToUse = -1;
+
+            _lastTarget = target;
 
             EndTurn();
         }

@@ -28,14 +28,19 @@ namespace ConsoleTextRPG.Characters
             Thread.Sleep(rng.Next(500, 2001));
 
             Character target = targets[rng.Next(0, targets.Length)];
-            foreach (var atk in Skills[rng.Next(0, Skills.Count)].Attacks)
+            UseSkill(Skills[rng.Next(0, Skills.Count)], target);
+
+            string lastDamage = target.GetLastReceivedDamageInfo();
+            if (lastDamage != null)
             {
-                target.ReceiveAttack(this, atk);
+                Console.WriteLine("\nYou receive " + lastDamage + " damage.");
+            }
+            else
+            {
+                Console.WriteLine("\nYou don't receive any damage.");
             }
 
-            Console.WriteLine("\n\nYou receive " + target.GetLastReceivedDamageInfo());
-
-            Console.WriteLine("\n\nPress any key to continue.");
+            Console.WriteLine("\nPress any key to continue.");
 
             Console.ReadKey(true);
 
@@ -44,7 +49,7 @@ namespace ConsoleTextRPG.Characters
 
         public override void EndTurn()
         {
-            Rendering.Rerender();
+            Rendering.Rerender(true);
 
             Rendering.UnlockInput();
         }

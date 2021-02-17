@@ -72,8 +72,10 @@ namespace ConsoleTextRPG.ConsoleRendering
             Rerender();
         }
 
-        public static void Rerender()
+        public static void Rerender(bool clear = false)
         {
+            if (clear) Console.Clear();
+
             _rendered = false;
         }
 

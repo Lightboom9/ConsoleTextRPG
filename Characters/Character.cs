@@ -108,6 +108,20 @@ namespace ConsoleTextRPG.Characters
 
         public abstract void EndTurn();
 
+        public virtual void UseSkill(AbilityInfo skill, Character target)
+        {
+            if (skill.HealthCost >= Health) return;
+            if (skill.ManaCost > Mana) return;
+
+            foreach (var atk in skill.Attacks)
+            {
+                target.ReceiveAttack(this, atk);
+            }
+
+            Health -= skill.HealthCost;
+            Mana -= skill.ManaCost;
+        }
+
         public virtual void ReceiveAttack(Character attacker, AbilityAttack attack)
         {
             switch (attack.type)

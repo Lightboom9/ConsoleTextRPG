@@ -27,6 +27,10 @@ namespace ConsoleTextRPG
 
             BattleMenu menu = new BattleMenu(player, enemy);
             Rendering.SetActiveMenu(menu);
+
+            Thread.Sleep(250);
+
+            enemy.StartTurn(new Character[] { player });
         }
     }
 }

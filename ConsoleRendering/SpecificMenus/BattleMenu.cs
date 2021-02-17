@@ -46,15 +46,14 @@ namespace ConsoleTextRPG.ConsoleRendering
 
         public override string Render()
         {
+            string str = $"You have {_player.Health} health and {_player.Mana} mana.\nEnemy has {_enemy.Health} health and {_enemy.Mana} mana.";
+
             /*
             string enemyDamageInfo = _enemy.GetLastReceivedDamageInfo();
             string playerDamageInfo = _player.GetLastReceivedDamageInfo();
 
             if (enemyDamageInfo != null) _enemyDamageInfo = enemyDamageInfo;
             if (playerDamageInfo != null) _playerDamageInfo = playerDamageInfo;
-            */
-
-            string str = $"You have {_player.Health} health and {_player.Mana} mana.\nEnemy has {_enemy.Health} health and {_enemy.Mana} mana.";
 
             if (_enemyDamageInfo != null || _playerDamageInfo != null)
             {
@@ -68,6 +67,7 @@ namespace ConsoleTextRPG.ConsoleRendering
             {
                 str += $"\nEnemy received: {_enemyDamageInfo} damage.";
             }
+            */
 
             str += "\n\n[Tab] View info.\n[Space] Select skill to use.";
 
