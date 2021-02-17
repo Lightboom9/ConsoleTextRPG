@@ -12,7 +12,7 @@ namespace ConsoleTextRPG.Characters
         public string[] Weaknesses { get; private set; }
         public string[] Strengths { get; private set; }
 
-        protected RandomEnemy(int health, int mana, int physPower, int magePower, int initiative, int bluntResist, int cutResist, int piercingResist, int fireResist, int iceResist, int airResist) : base(health, mana, physPower, magePower, initiative, bluntResist, cutResist, piercingResist, fireResist, iceResist, airResist)
+        protected RandomEnemy(int health, int mana, int physPower, int magePower, int initiative, int evasion, int bluntResist, int cutResist, int piercingResist, int fireResist, int iceResist, int airResist) : base(health, mana, physPower, magePower, initiative, evasion, bluntResist, cutResist, piercingResist, fireResist, iceResist, airResist)
         {
             
         }
@@ -243,7 +243,7 @@ namespace ConsoleTextRPG.Characters
                 }
             }
 
-            RandomEnemy enemy = new RandomEnemy(health, mana, physPower, magePower, init, bluntRes, cutRes, piercingRes, fireRes, iceRes, airRes);
+            RandomEnemy enemy = new RandomEnemy(health, mana, physPower, magePower, init, rng.Next(3, 8), bluntRes, cutRes, piercingRes, fireRes, iceRes, airRes);
 
             enemy.Strengths = descStrongs.ToArray();
             enemy.Weaknesses = descWeaks.ToArray();

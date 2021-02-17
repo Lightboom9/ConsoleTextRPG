@@ -65,6 +65,7 @@ namespace ConsoleTextRPG.Characters
         public int BasePhysicalPower { get; protected set; }
         public int BaseMagicalPower { get; protected set; }
         public int BaseInitiative { get; protected set;  }
+        public int BaseEvasion { get; protected set; }
 
         public int BaseBluntResist { get; protected set; }
         public int BaseCutResist { get; protected set; }
@@ -76,6 +77,7 @@ namespace ConsoleTextRPG.Characters
         public int PhysicalPower { get; protected set; }
         public int MagicalPower { get; protected set; }
         public int Initiative { get; protected set; }
+        public int Evasion { get; protected set; }
 
         public int BluntResist { get; protected set; }
         public int CutResist { get; protected set; }
@@ -88,7 +90,7 @@ namespace ConsoleTextRPG.Characters
 
         public Action OnTurnEnd { get; set; }
 
-        protected Character(int health, int mana, int physPower, int magePower, int initiative, int bluntResist, int cutResist, int piercingResist, int fireResist, int iceResist, int airResist)
+        protected Character(int health, int mana, int physPower, int magePower, int initiative, int evasion, int bluntResist, int cutResist, int piercingResist, int fireResist, int iceResist, int airResist)
         {
             Health = MaxHealth = health;
             Mana = MaxMana = mana;
@@ -96,6 +98,7 @@ namespace ConsoleTextRPG.Characters
             BasePhysicalPower = physPower;
             BaseMagicalPower = magePower;
             BaseInitiative = initiative;
+            BaseEvasion = evasion;
 
             BaseBluntResist = bluntResist;
             BaseCutResist = cutResist;
@@ -110,6 +113,7 @@ namespace ConsoleTextRPG.Characters
             PhysicalPower = BasePhysicalPower;
             MagicalPower = BaseMagicalPower;
             Initiative = BaseInitiative;
+            Evasion = BaseEvasion;
 
             BluntResist = BaseBluntResist;
             CutResist = BaseCutResist;
@@ -142,68 +146,87 @@ namespace ConsoleTextRPG.Characters
 
         public virtual void ReceiveAttack(Character attacker, AbilityAttack attack)
         {
+            Random rng = new Random();
+
+            int hitRate = attack.accuracy - Evasion;
+            if (hitRate < rng.Next(1, 101))
+            {
+                _lastReceivedDamagesInfo.Add("(miss)");
+
+                return;
+            }
+
+            bool crit = attack.crit > rng.Next(1, 101);
+
             switch (attack.type)
             {
                 case DamageType.Pure:
                 {
                     int damage = attack.GetDamage(attacker.MagicalPower);
+                    if (crit) damage = damage * 2;
                     Health -= damage;
 
-                    _lastReceivedDamagesInfo.Add(damage + " pure");
+                    _lastReceivedDamagesInfo.Add((!crit ? "" : "(crit!) ") + damage + " pure");
 
                     break;
                 }
                 case DamageType.Fire:
                 {
                     int damage = (int)Math.Round(attack.GetDamage(attacker.MagicalPower) / Math.Sqrt(FireResist));
+                    if (crit) damage = damage * 2;
                     Health -= damage;
 
-                    _lastReceivedDamagesInfo.Add(damage + " fire");
+                    _lastReceivedDamagesInfo.Add((!crit ? "" : "(crit!) ") + damage + " fire");
 
                     break;
                 }
                 case DamageType.Ice:
                 {
                     int damage = (int)Math.Round(attack.GetDamage(attacker.MagicalPower) / Math.Sqrt(IceResist));
+                    if (crit) damage = damage * 2;
                     Health -= damage;
 
-                    _lastReceivedDamagesInfo.Add(damage + " ice");
+                    _lastReceivedDamagesInfo.Add((!crit ? "" : "(crit!) ") + damage + " ice");
 
                     break;
                 }
                 case DamageType.Air:
                 {
                     int damage = (int)Math.Round(attack.GetDamage(attacker.MagicalPower) / Math.Sqrt(AirResist));
+                    if (crit) damage = damage * 2;
                     Health -= damage;
 
-                    _lastReceivedDamagesInfo.Add(damage + " air");
+                    _lastReceivedDamagesInfo.Add((!crit ? "" : "(crit!) ") + damage + " air");
 
                     break;
                 }
                 case DamageType.Blunt:
                 {
                     int damage = (int)Math.Round(attack.GetDamage(attacker.PhysicalPower) / Math.Sqrt(BluntResist));
+                    if (crit) damage = damage * 2;
                     Health -= damage;
 
-                    _lastReceivedDamagesInfo.Add(damage + " blunt");
+                    _lastReceivedDamagesInfo.Add((!crit ? "" : "(crit!) ") + damage + " blunt");
 
                     break;
                 }
                 case DamageType.Cut:
                 {
                     int damage = (int)Math.Round(attack.GetDamage(attacker.PhysicalPower) / Math.Sqrt(CutResist));
+                    if (crit) damage = damage * 2;
                     Health -= damage;
 
-                    _lastReceivedDamagesInfo.Add(damage + " cut");
+                    _lastReceivedDamagesInfo.Add((!crit ? "" : "(crit!) ") + damage + " cut");
 
                     break;
                 }
                 case DamageType.Piercing:
                 {
                     int damage = (int)Math.Round(attack.GetDamage(attacker.PhysicalPower) / Math.Sqrt(PiercingResist));
+                    if (crit) damage = damage * 2;
                     Health -= damage;
 
-                    _lastReceivedDamagesInfo.Add(damage + " piercing");
+                    _lastReceivedDamagesInfo.Add((!crit ? "" : "(crit!) ") + damage + " piercing");
 
                     break;
                 }

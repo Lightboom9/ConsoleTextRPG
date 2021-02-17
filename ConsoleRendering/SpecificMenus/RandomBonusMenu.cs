@@ -21,6 +21,7 @@ namespace ConsoleTextRPG.ConsoleRendering
             {
                 // Restore health/mana, raise a characteristic, pick a new skill.
                 int bonusType = rng.Next(0, 3);
+                bonusType = 0;
 
                 switch (bonusType)
                 {

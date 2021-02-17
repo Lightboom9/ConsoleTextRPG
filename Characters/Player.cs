@@ -17,7 +17,7 @@ namespace ConsoleTextRPG.Characters
             {
                 int diff = value - _baseEndurance;
                 _baseEndurance = value;
-                MaxHealth += diff * 10;
+                MaxHealth = _baseEndurance * 10;
             }
         }
         public int BaseIntelligence { get; protected set; }
@@ -28,7 +28,7 @@ namespace ConsoleTextRPG.Characters
             {
                 int diff = value - _baseWisdom;
                 _baseWisdom = value;
-                MaxMana += diff * 10;
+                MaxMana = _baseWisdom * 10;
             }
         }
         public int BaseAgility { get; protected set; }
@@ -55,7 +55,7 @@ namespace ConsoleTextRPG.Characters
         /// <param name="endurance">Determines max health.</param>
         /// <param name="wisdom">Determines magical attacks defense and max mana.</param>
         /// <param name="wits">Determines initiative.</param>
-        public Player(int strength, int intelligence, int agility, int endurance, int wisdom, int wits) : base(endurance * 10, wisdom * 10, strength, intelligence, wits, endurance, endurance, endurance, wisdom, wisdom, wisdom)
+        public Player(int strength, int intelligence, int agility, int endurance, int wisdom, int wits) : base(endurance * 10, wisdom * 10, strength, intelligence, wits, agility, endurance, endurance, endurance, wisdom, wisdom, wisdom)
         {
             PlayerControlled = true;
 
@@ -69,7 +69,8 @@ namespace ConsoleTextRPG.Characters
 
         public override void StartTurn(Character[] targets)
         {
-            // ?
+            PhysicalPower = Strength;
+            MagicalPower = Intelligence;
         }
 
         public override void EndTurn()
@@ -99,6 +100,18 @@ namespace ConsoleTextRPG.Characters
             Rendering.UnlockInput();
 
             base.EndTurn();
+        }
+
+        public override void EnterFight()
+        {
+            base.EnterFight();
+
+            Strength = BaseStrength;
+            Agility = BaseAgility;
+            Intelligence = BaseIntelligence;
+            Endurance = BaseEndurance;
+            Wisdom = BaseWisdom;
+            Wits = BaseWits;
         }
 
         public void UseSelectedSkill(Character target)
