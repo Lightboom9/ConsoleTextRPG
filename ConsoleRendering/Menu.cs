@@ -10,6 +10,15 @@ namespace ConsoleTextRPG.ConsoleRendering
 
         protected Action OnReturnControl { get; set; }
 
+        private string _lastReturnControlMessage = null;
+        protected string GetLastReturnControlMessage()
+        {
+            string msg = _lastReturnControlMessage;
+            _lastReturnControlMessage = null;
+
+            return msg;
+        }
+
         public Dictionary<ConsoleKey, Action> Actions { get; } = new Dictionary<ConsoleKey, Action>();
 
         protected Menu() { }
@@ -33,9 +42,27 @@ namespace ConsoleTextRPG.ConsoleRendering
         {
             if (_parent == null) return;
 
-            _parent.OnReturnControl?.Invoke();
+            //Console.WriteLine("\nReturning from " + this.GetType() + " to " + _parent.GetType());
+            //Console.ReadKey(true);
 
             Rendering.SetActiveMenu(_parent);
+
+            _parent.OnReturnControl?.Invoke();
+        }
+        protected void ReturnControl(string msg)
+        {
+            if (_parent == null) return;
+
+            _parent._lastReturnControlMessage = msg;
+            
+            ReturnControl();
+        }
+
+        protected void HandleControl(Menu child)
+        {
+            child._parent = this;
+
+            Rendering.SetActiveMenu(child);
         }
 
         protected void Delay(int milliseconds)

@@ -111,5 +111,17 @@ namespace ConsoleTextRPG.Characters
 
             return desc;
         }
+
+        public int GetAverageLevel()
+        {
+            return (int) Math.Round((BaseStrength + BaseAgility + BaseIntelligence + BaseEndurance + BaseWisdom + BaseWits) / 6f);
+        }
+
+        public void FullRevive()
+        {
+            Health = MaxHealth;
+            Mana = MaxMana;
+            _alive = true;
+        }
     }
 }

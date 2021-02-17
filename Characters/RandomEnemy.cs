@@ -26,7 +26,7 @@ namespace ConsoleTextRPG.Characters
 
             Console.Clear();
             Console.WriteLine("Enemy is thinking...");
-            Thread.Sleep(rng.Next(500, 2001));
+            Thread.Sleep(rng.Next(250, 751));
 
             Character target = targets[rng.Next(0, targets.Length)];
             UseSkill(Skills[rng.Next(0, Skills.Count)], target);

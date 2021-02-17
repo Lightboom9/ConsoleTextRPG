@@ -10,7 +10,7 @@ namespace ConsoleTextRPG.Characters
         public bool PlayerControlled { get; protected set; } = false;
 
         protected int _health;
-        protected bool _alive;
+        protected bool _alive = true;
 
         public int MaxHealth { get; protected set; }
         public int MaxMana { get; protected set; }

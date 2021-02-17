@@ -23,13 +23,13 @@ namespace ConsoleTextRPG.ConsoleRendering
             Actions[ConsoleKey.Tab] = () =>
             {
                 EnemyInfoMenu menu = new EnemyInfoMenu(this, enemy);
-                Rendering.SetActiveMenu(menu);
+                HandleControl(menu);
             };
             Actions[ConsoleKey.Spacebar] = () =>
             {
                 void MakePlayerUseSelectedSkill()
                 {
-                    OnReturnControl -= MakePlayerUseSelectedSkill;
+                    OnReturnControl = null;
 
                     if (PlayerSelectedSkill)
                     {
@@ -39,35 +39,36 @@ namespace ConsoleTextRPG.ConsoleRendering
                     }
                 }
 
-                OnReturnControl += MakePlayerUseSelectedSkill;
+                OnReturnControl = MakePlayerUseSelectedSkill;
 
                 SkillSelectionMenu menu = new SkillSelectionMenu(this, player);
-                Rendering.SetActiveMenu(menu);
+                HandleControl(menu);
+                //Rendering.SetActiveMenu(menu);
             };
 
-            player.OnTurnEnd += EnemyTurn;
-            enemy.OnTurnEnd += PlayerTurn;
+            player.OnTurnEnd = EnemyTurn;
+            enemy.OnTurnEnd = PlayerTurn;
             PlayerTurn();
         }
 
         private void PlayerTurn()
         {
-            if (!_enemy.IsAlive)
+            Rendering.UnlockInput();
+
+            if (!BothAreAlive())
             {
-                ReturnControl();
+                ReturnControl(_player.IsAlive ? "Victory" : "Lose");
 
                 return;
             }
-
-            Rendering.UnlockInput();
 
             _player.StartTurn(new Character[] { _enemy });
         }
         private void EnemyTurn()
         {
-            if (!_player.IsAlive)
+            if (!BothAreAlive())
             {
-                ReturnControl();
+                ReturnControl(_player.IsAlive ? "Victory" : "Lose");
 
                 return;
             }
@@ -75,6 +76,11 @@ namespace ConsoleTextRPG.ConsoleRendering
             Rendering.LockInput();
 
             _enemy.StartTurn(new Character[] { _player });
+        }
+
+        private bool BothAreAlive()
+        {
+            return _enemy.IsAlive && _player.IsAlive;
         }
 
         public override string Render()

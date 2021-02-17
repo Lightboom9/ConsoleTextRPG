@@ -5,18 +5,99 @@ namespace ConsoleTextRPG.ConsoleRendering
 {
     public class ExplorationMenu : Menu
     {
-        public ExplorationMenu()
+        private Player _player;
+
+        private bool? _fightWasWon = null;
+        private int _winStreak;
+
+        public ExplorationMenu(Player player)
         {
+            _player = player;
+
+            OnReturnControl += () =>
+            {
+                while (Console.KeyAvailable)
+                {
+                    Console.ReadKey(true);
+                }
+                string msg = GetLastReturnControlMessage();
+                
+                if (msg == null) return;
+
+                if (msg == "Victory")
+                {
+                    _fightWasWon = true;
+
+                    _winStreak++;
+                }
+                else
+                {
+                    if (msg == "Lose")
+                    {
+                        _fightWasWon = false;
+
+                        _winStreak = 0;
+
+                        _player.FullRevive();
+                    }
+                }
+            };
+
             Actions[ConsoleKey.Spacebar] = () =>
             {
-                // Advance event. Or just start a fight, for now...
+                if (_fightWasWon == null)
+                {
+                    StartRandomFight();
+                }
+                else
+                {
+                    _fightWasWon = null;
+                }
             };
+        }
+
+        private static bool _done = false;
+        private void StartRandomFight()
+        {
+            if (_done)
+            {
+                return;
+            }
+            _done = true;
+
+            Random rng = new Random();
+
+            int averageLevel = (int)Math.Round(_player.GetAverageLevel() / 1.66f);
+            RandomEnemy enemy = RandomEnemy.Generate(rng.Next(averageLevel - 1, averageLevel + 2));
+
+            _player.EnterFight();
+            enemy.EnterFight();
+
+            BattleMenu battle = new BattleMenu(this, _player, enemy);
+            HandleControl(battle);
         }
 
         public override string Render()
         {
             string str = "";
 
+            if (_fightWasWon == null)
+            {
+                if (_winStreak > 0) str += $"Your winstreak is { _winStreak } wins long. You have { _player.Health } health and { _player.Mana } mana left.\n\n";
+                str += "Press [Space] to enter random fight.";
+            }
+            else
+            {
+                if (_fightWasWon == true)
+                {
+                    str += "You won the fight, congrats!\n\nPress [Space] to continue.";
+                }
+                else
+                {
+                    str += "You lost the fight, too bad. Health and mana are restored, feel free to continue.\n\nPress [Space] to continue.";
+                }
+            }
+            
             return str;
         }
     }

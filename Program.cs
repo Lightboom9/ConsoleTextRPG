@@ -20,17 +20,9 @@ namespace ConsoleTextRPG
             player.Skills.Add(AbilityInfo.Generate(10));
             player.Skills.Add(AbilityInfo.Generate(10));
 
-            RandomEnemy enemy = RandomEnemy.Generate(10);
+            ExplorationMenu exploration = new ExplorationMenu(player);
 
-            player.EnterFight();
-            enemy.EnterFight();
-
-            ExplorationMenu exploration = new ExplorationMenu();
-
-            BattleMenu battle = new BattleMenu(exploration, player, enemy);
-            Rendering.SetActiveMenu(battle);
-
-
+            Rendering.SetActiveMenu(exploration);
         }
     }
 }

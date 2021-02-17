@@ -8,7 +8,7 @@ namespace ConsoleTextRPG.ConsoleRendering
         private static bool _waitingForInput = true;
         private static Menu _currentMenu;
 
-        private static bool _rendered = false;
+        private static bool _rendered = true;
         private static bool _lockRendering = false;
 
         public static void BeginRenderLoop()
@@ -67,7 +67,9 @@ namespace ConsoleTextRPG.ConsoleRendering
         public static void SetActiveMenu(Menu menu)
         {
             _currentMenu = menu;
-
+            //while (Console.KeyAvailable) Console.ReadKey(true);
+            //Console.WriteLine("\nControl goes to: " + menu.GetType());
+            //Console.ReadKey(true);
             Console.Clear();
 
             Rerender();
