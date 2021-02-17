@@ -186,8 +186,7 @@ namespace ConsoleTextRPG.Skills
                 float accuracy = 0;
                 float healthCost = 0;
                 float manaCost = 0;
-                DamageType type = magic ? (DamageType) rng.Next(3, 6) : (DamageType) rng.Next(0, 2);
-
+                DamageType type = magic ? (DamageType) rng.Next(3, 6) : (DamageType) rng.Next(0, 3);
 
                 // 0=power-accuracy-crit, 1=power-crit-accuracy, 2=crit-power-accuracy, 3=accuracy-crit-power
                 int order = rng.Next(0, 4);

@@ -91,10 +91,14 @@ namespace ConsoleTextRPG.ConsoleRendering
             {
                 if (_fightWasWon == true)
                 {
+                    Console.Clear();
+
                     str += "You won the fight, congrats! Pick a bonus.\n\nPress [Space] to continue.";
                 }
                 else
                 {
+                    Console.Clear();
+
                     str += "You lost the fight, too bad. Health and mana are restored, feel free to try again.\n\nPress [Space] to continue.";
                 }
             }

@@ -23,14 +23,15 @@ namespace ConsoleTextRPG.Skills
         private static string GetCutMainName()
         {
             Random rng = new Random();
-            int casesCount = 4;
+            int casesCount = 5;
 
             switch (rng.Next(0, casesCount))
             {
-                case 0: return "Cut";
+                case 0: return "Dagger";
                 case 1: return "Knife";
                 case 2: return "Blade";
                 case 3: return "Sword";
+                case 4: return "Edge";
                 default: return null;
             }
         }
