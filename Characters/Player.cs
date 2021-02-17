@@ -7,9 +7,30 @@ namespace ConsoleTextRPG.Characters
 {
     public class Player : Character
     {
-        public int BaseEndurance { get; protected set; }
+        private int _baseEndurance;
+        private int _baseWisdom;
+
+        public int BaseEndurance
+        {
+            get => _baseEndurance;
+            set
+            {
+                int diff = value - _baseEndurance;
+                _baseEndurance = value;
+                MaxHealth += diff * 10;
+            }
+        }
         public int BaseIntelligence { get; protected set; }
-        public int BaseWisdom { get; protected set; }
+        public int BaseWisdom
+        {
+            get => _baseWisdom;
+            set
+            {
+                int diff = value - _baseWisdom;
+                _baseWisdom = value;
+                MaxMana += diff * 10;
+            }
+        }
         public int BaseAgility { get; protected set; }
         public int BaseStrength { get; protected set; }
         public int BaseWits { get; protected set; }
@@ -122,6 +143,22 @@ namespace ConsoleTextRPG.Characters
             Health = MaxHealth;
             Mana = MaxMana;
             _alive = true;
+        }
+
+        public void Restore(int health, int mana)
+        {
+            Health += health;
+            Mana += mana;
+        }
+
+        public void RaiseStats(int strength, int agility, int intelligence, int endurance, int wisdom, int wits)
+        {
+            BaseStrength += strength;
+            BaseAgility += agility;
+            BaseIntelligence += intelligence;
+            BaseEndurance += endurance;
+            BaseWisdom += wisdom;
+            BaseWits += wits;
         }
     }
 }

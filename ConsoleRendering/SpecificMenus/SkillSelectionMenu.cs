@@ -11,7 +11,7 @@ namespace ConsoleTextRPG.ConsoleRendering
 
         private int _selectedIndex = _cursorMemory;
 
-        public SkillSelectionMenu(BattleMenu battleMenuParent, Player player) : base(battleMenuParent)
+        public SkillSelectionMenu(BattleMenu battleMenuParent, Player player)
         {
             _player = player;
 
@@ -49,7 +49,7 @@ namespace ConsoleTextRPG.ConsoleRendering
                 str += skill.Name + ": " + _player.GetDescription(skill) + "\n";
             }
 
-            str += "\n[W]/[S] to move through list, [Space] to select skill, [C] to cancel.";
+            str += "\nPress [W]/[S] to move through list, [Space] to select skill, [C] to cancel.";
 
             return str;
         }

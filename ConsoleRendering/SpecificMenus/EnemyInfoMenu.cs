@@ -7,7 +7,7 @@ namespace ConsoleTextRPG.ConsoleRendering
     {
         private RandomEnemy _enemy;
 
-        public EnemyInfoMenu(BattleMenu battleMenuParent, RandomEnemy enemy) : base(battleMenuParent)
+        public EnemyInfoMenu(RandomEnemy enemy)
         {
             _enemy = enemy;
 

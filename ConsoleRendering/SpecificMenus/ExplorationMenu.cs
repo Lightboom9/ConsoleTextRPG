@@ -35,10 +35,6 @@ namespace ConsoleTextRPG.ConsoleRendering
                     if (msg == "Lose")
                     {
                         _fightWasWon = false;
-
-                        _winStreak = 0;
-
-                        _player.FullRevive();
                     }
                 }
             };
@@ -51,20 +47,25 @@ namespace ConsoleTextRPG.ConsoleRendering
                 }
                 else
                 {
+                    if (_fightWasWon == true)
+                    {
+                        RandomBonusMenu bonusMenu = new RandomBonusMenu(player);
+                        HandleControl(bonusMenu);
+                    }
+                    else
+                    {
+                        _winStreak = 0;
+
+                        _player.FullRevive();
+                    }
+
                     _fightWasWon = null;
                 }
             };
         }
 
-        private static bool _done = false;
         private void StartRandomFight()
         {
-            if (_done)
-            {
-                return;
-            }
-            _done = true;
-
             Random rng = new Random();
 
             int averageLevel = (int)Math.Round(_player.GetAverageLevel() / 1.66f);
@@ -73,7 +74,7 @@ namespace ConsoleTextRPG.ConsoleRendering
             _player.EnterFight();
             enemy.EnterFight();
 
-            BattleMenu battle = new BattleMenu(this, _player, enemy);
+            BattleMenu battle = new BattleMenu(_player, enemy);
             HandleControl(battle);
         }
 
@@ -90,11 +91,11 @@ namespace ConsoleTextRPG.ConsoleRendering
             {
                 if (_fightWasWon == true)
                 {
-                    str += "You won the fight, congrats!\n\nPress [Space] to continue.";
+                    str += "You won the fight, congrats! Pick a bonus.\n\nPress [Space] to continue.";
                 }
                 else
                 {
-                    str += "You lost the fight, too bad. Health and mana are restored, feel free to continue.\n\nPress [Space] to continue.";
+                    str += "You lost the fight, too bad. Health and mana are restored, feel free to try again.\n\nPress [Space] to continue.";
                 }
             }
             

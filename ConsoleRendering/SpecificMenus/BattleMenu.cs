@@ -13,7 +13,7 @@ namespace ConsoleTextRPG.ConsoleRendering
         private string _enemyDamageInfo = null;
         private string _playerDamageInfo = null;
 
-        public BattleMenu(ExplorationMenu explorationMenu, Player player, RandomEnemy enemy) : base(explorationMenu)
+        public BattleMenu(Player player, RandomEnemy enemy)
         {
             Rendering.LockInput();
 
@@ -22,7 +22,7 @@ namespace ConsoleTextRPG.ConsoleRendering
 
             Actions[ConsoleKey.Tab] = () =>
             {
-                EnemyInfoMenu menu = new EnemyInfoMenu(this, enemy);
+                EnemyInfoMenu menu = new EnemyInfoMenu(enemy);
                 HandleControl(menu);
             };
             Actions[ConsoleKey.Spacebar] = () =>

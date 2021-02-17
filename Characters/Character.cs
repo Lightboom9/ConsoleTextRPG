@@ -10,6 +10,7 @@ namespace ConsoleTextRPG.Characters
         public bool PlayerControlled { get; protected set; } = false;
 
         protected int _health;
+        protected int _mana;
         protected bool _alive = true;
 
         public int MaxHealth { get; protected set; }
@@ -26,9 +27,19 @@ namespace ConsoleTextRPG.Characters
                     _health = 0;
                     _alive = false;
                 }
+                if (_health > MaxHealth) _health = MaxHealth;
             }
         }
-        public int Mana { get; protected set; }
+        public int Mana
+        {
+            get => _mana;
+            protected set
+            {
+                _mana = value;
+                if (_mana < 0) _mana = 0;
+                if (_mana > MaxMana) _mana = MaxMana;
+            }
+        }
 
         public bool IsAlive => _alive;
 
