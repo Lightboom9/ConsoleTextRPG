@@ -20,6 +20,7 @@ namespace ConsoleTextRPG.Characters
         public override void StartTurn(Character[] targets)
         {
             Rendering.LockInput();
+            Rendering.LockRendering();
 
             Random rng = new Random();
 
@@ -40,6 +41,7 @@ namespace ConsoleTextRPG.Characters
                 Console.WriteLine("\nYou don't receive any damage.");
             }
 
+            Thread.Sleep(250);
             Console.WriteLine("\nPress any key to continue.");
 
             Console.ReadKey(true);
@@ -49,9 +51,11 @@ namespace ConsoleTextRPG.Characters
 
         public override void EndTurn()
         {
+            Rendering.UnlockRendering();
             Rendering.Rerender(true);
-
             Rendering.UnlockInput();
+
+            base.EndTurn();
         }
 
         public static RandomEnemy Generate(int enemyLevel)

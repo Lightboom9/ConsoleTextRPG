@@ -56,6 +56,7 @@ namespace ConsoleTextRPG.Characters
             if (_lastTarget == null) return;
 
             Rendering.LockInput();
+            Rendering.LockRendering();
 
             Console.Clear();
 
@@ -72,9 +73,11 @@ namespace ConsoleTextRPG.Characters
             Console.WriteLine("\nPress any key to continue.");
             Console.ReadKey(true);
 
+            Rendering.UnlockRendering();
             Rendering.Rerender(true);
-
             Rendering.UnlockInput();
+
+            base.EndTurn();
         }
 
         public void UseSelectedSkill(Character target)

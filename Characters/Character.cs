@@ -30,6 +30,8 @@ namespace ConsoleTextRPG.Characters
         }
         public int Mana { get; protected set; }
 
+        public bool IsAlive => _alive;
+
         protected List<string> _lastReceivedDamagesInfo = new List<string>();
 
         public string GetLastReceivedDamageInfo()
@@ -73,6 +75,8 @@ namespace ConsoleTextRPG.Characters
 
         public List<AbilityInfo> Skills { get; } = new List<AbilityInfo>();
 
+        public Action OnTurnEnd { get; set; }
+
         protected Character(int health, int mana, int physPower, int magePower, int initiative, int bluntResist, int cutResist, int piercingResist, int fireResist, int iceResist, int airResist)
         {
             Health = MaxHealth = health;
@@ -106,7 +110,10 @@ namespace ConsoleTextRPG.Characters
 
         public abstract void StartTurn(Character[] targets);
 
-        public abstract void EndTurn();
+        public virtual void EndTurn()
+        {
+            OnTurnEnd?.Invoke();
+        }
 
         public virtual void UseSkill(AbilityInfo skill, Character target)
         {

@@ -9,6 +9,7 @@ namespace ConsoleTextRPG.ConsoleRendering
         private static Menu _currentMenu;
 
         private static bool _rendered = false;
+        private static bool _lockRendering = false;
 
         public static void BeginRenderLoop()
         {
@@ -23,7 +24,7 @@ namespace ConsoleTextRPG.ConsoleRendering
         {
             while (true)
             {
-                if (_currentMenu == null)
+                if (_currentMenu == null || _lockRendering)
                 {
                     Thread.Sleep(50);
                     continue;
@@ -87,6 +88,16 @@ namespace ConsoleTextRPG.ConsoleRendering
         public static void UnlockInput()
         {
             _waitingForInput = true;
+        }
+
+        public static void LockRendering()
+        {
+            _lockRendering = true;
+        }
+
+        public static void UnlockRendering()
+        {
+            _lockRendering = false;
         }
     }
 }

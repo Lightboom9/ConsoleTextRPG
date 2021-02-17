@@ -13,8 +13,10 @@ namespace ConsoleTextRPG.ConsoleRendering
         private string _enemyDamageInfo = null;
         private string _playerDamageInfo = null;
 
-        public BattleMenu(Player player, RandomEnemy enemy)
+        public BattleMenu(ExplorationMenu explorationMenu, Player player, RandomEnemy enemy) : base(explorationMenu)
         {
+            Rendering.LockInput();
+
             _enemy = enemy;
             _player = player;
 
@@ -42,6 +44,37 @@ namespace ConsoleTextRPG.ConsoleRendering
                 SkillSelectionMenu menu = new SkillSelectionMenu(this, player);
                 Rendering.SetActiveMenu(menu);
             };
+
+            player.OnTurnEnd += EnemyTurn;
+            enemy.OnTurnEnd += PlayerTurn;
+            PlayerTurn();
+        }
+
+        private void PlayerTurn()
+        {
+            if (!_enemy.IsAlive)
+            {
+                ReturnControl();
+
+                return;
+            }
+
+            Rendering.UnlockInput();
+
+            _player.StartTurn(new Character[] { _enemy });
+        }
+        private void EnemyTurn()
+        {
+            if (!_player.IsAlive)
+            {
+                ReturnControl();
+
+                return;
+            }
+
+            Rendering.LockInput();
+
+            _enemy.StartTurn(new Character[] { _player });
         }
 
         public override string Render()

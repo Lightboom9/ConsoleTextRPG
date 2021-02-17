@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ConsoleTextRPG.ConsoleRendering
 {
@@ -35,6 +36,11 @@ namespace ConsoleTextRPG.ConsoleRendering
             _parent.OnReturnControl?.Invoke();
 
             Rendering.SetActiveMenu(_parent);
+        }
+
+        protected void Delay(int milliseconds)
+        {
+            Thread.Sleep(milliseconds);
         }
     }
 }

@@ -25,12 +25,12 @@ namespace ConsoleTextRPG
             player.EnterFight();
             enemy.EnterFight();
 
-            BattleMenu menu = new BattleMenu(player, enemy);
-            Rendering.SetActiveMenu(menu);
+            ExplorationMenu exploration = new ExplorationMenu();
 
-            Thread.Sleep(250);
+            BattleMenu battle = new BattleMenu(exploration, player, enemy);
+            Rendering.SetActiveMenu(battle);
 
-            enemy.StartTurn(new Character[] { player });
+
         }
     }
 }
