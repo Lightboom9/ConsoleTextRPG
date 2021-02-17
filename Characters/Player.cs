@@ -43,7 +43,12 @@ namespace ConsoleTextRPG.Characters
             BaseWits = wits;
         }
 
-        public override void Act(Character[] targets)
+        public override void StartTurn(Character[] targets)
+        {
+            // ?
+        }
+
+        public override void EndTurn()
         {
 
         }
@@ -61,6 +66,8 @@ namespace ConsoleTextRPG.Characters
             }
 
             NextSelectedSkillToUse = -1;
+
+            EndTurn();
         }
 
         public string GetDescription(AbilityInfo info)

@@ -76,5 +76,15 @@ namespace ConsoleTextRPG.ConsoleRendering
         {
             _rendered = false;
         }
+
+        public static void LockInput()
+        {
+            _waitingForInput = false;
+        }
+
+        public static void UnlockInput()
+        {
+            _waitingForInput = true;
+        }
     }
 }

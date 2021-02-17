@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using ConsoleTextRPG.ConsoleRendering;
 using ConsoleTextRPG.Skills;
 
 namespace ConsoleTextRPG.Characters
@@ -13,6 +15,38 @@ namespace ConsoleTextRPG.Characters
         protected RandomEnemy(int health, int mana, int physPower, int magePower, int initiative, int bluntResist, int cutResist, int piercingResist, int fireResist, int iceResist, int airResist) : base(health, mana, physPower, magePower, initiative, bluntResist, cutResist, piercingResist, fireResist, iceResist, airResist)
         {
             
+        }
+
+        public override void StartTurn(Character[] targets)
+        {
+            Rendering.LockInput();
+
+            Random rng = new Random();
+
+            Console.Clear();
+            Console.WriteLine("Enemy is thinking...");
+            Thread.Sleep(rng.Next(500, 2001));
+
+            Character target = targets[rng.Next(0, targets.Length)];
+            foreach (var atk in Skills[rng.Next(0, Skills.Count)].Attacks)
+            {
+                target.ReceiveAttack(this, atk);
+            }
+
+            Console.WriteLine("\n\nYou receive " + target.GetLastReceivedDamageInfo());
+
+            Console.WriteLine("\n\nPress any key to continue.");
+
+            Console.ReadKey(true);
+
+            EndTurn();
+        }
+
+        public override void EndTurn()
+        {
+            Rendering.Rerender();
+
+            Rendering.UnlockInput();
         }
 
         public static RandomEnemy Generate(int enemyLevel)
@@ -209,11 +243,6 @@ namespace ConsoleTextRPG.Characters
             for (int i = 0; i < skillCount; i++) enemy.Skills.Add(AbilityInfo.Generate(enemyLevel));
 
             return enemy;
-        }
-
-        public override void Act(Character[] targets)
-        {
-
         }
     }
 }

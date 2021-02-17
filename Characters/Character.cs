@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using ConsoleTextRPG.Skills;
 
 namespace ConsoleTextRPG.Characters
@@ -28,6 +29,25 @@ namespace ConsoleTextRPG.Characters
             }
         }
         public int Mana { get; protected set; }
+
+        protected List<string> _lastReceivedDamagesInfo = new List<string>();
+
+        public string GetLastReceivedDamageInfo()
+        {
+            if (_lastReceivedDamagesInfo.Count == 0) return null;
+
+            StringBuilder sb = new StringBuilder();
+            for (var i = 0; i < _lastReceivedDamagesInfo.Count; i++)
+            {
+                var str = _lastReceivedDamagesInfo[i];
+                if (i > 0) sb.Append(", ");
+                sb.Append(str);
+            }
+
+            _lastReceivedDamagesInfo.Clear();
+
+            return sb.ToString();
+        }
 
         public int BasePhysicalPower { get; protected set; }
         public int BaseMagicalPower { get; protected set; }
@@ -84,7 +104,9 @@ namespace ConsoleTextRPG.Characters
             AirResist = BaseAirResist;
         }
 
-        public abstract void Act(Character[] targets);
+        public abstract void StartTurn(Character[] targets);
+
+        public abstract void EndTurn();
 
         public virtual void ReceiveAttack(Character attacker, AbilityAttack attack)
         {
@@ -92,43 +114,64 @@ namespace ConsoleTextRPG.Characters
             {
                 case DamageType.Pure:
                 {
-                    Health -= attack.GetDamage(attacker.MagicalPower);
+                    int damage = attack.GetDamage(attacker.MagicalPower);
+                    Health -= damage;
+
+                    _lastReceivedDamagesInfo.Add(damage + " pure");
 
                     break;
                 }
                 case DamageType.Fire:
                 {
-                    Health -= (int)Math.Round(attack.GetDamage(attacker.MagicalPower) / Math.Sqrt(FireResist));
+                    int damage = (int)Math.Round(attack.GetDamage(attacker.MagicalPower) / Math.Sqrt(FireResist));
+                    Health -= damage;
+
+                    _lastReceivedDamagesInfo.Add(damage + " fire");
 
                     break;
                 }
                 case DamageType.Ice:
                 {
-                    Health -= (int)Math.Round(attack.GetDamage(attacker.MagicalPower) / Math.Sqrt(IceResist));
+                    int damage = (int)Math.Round(attack.GetDamage(attacker.MagicalPower) / Math.Sqrt(IceResist));
+                    Health -= damage;
+
+                    _lastReceivedDamagesInfo.Add(damage + " ice");
 
                     break;
                 }
                 case DamageType.Air:
                 {
-                    Health -= (int)Math.Round(attack.GetDamage(attacker.MagicalPower) / Math.Sqrt(AirResist));
+                    int damage = (int)Math.Round(attack.GetDamage(attacker.MagicalPower) / Math.Sqrt(AirResist));
+                    Health -= damage;
+
+                    _lastReceivedDamagesInfo.Add(damage + " air");
 
                     break;
                 }
                 case DamageType.Blunt:
                 {
-                    Health -= (int)Math.Round(attack.GetDamage(attacker.PhysicalPower) / Math.Sqrt(BluntResist));
+                    int damage = (int)Math.Round(attack.GetDamage(attacker.PhysicalPower) / Math.Sqrt(BluntResist));
+                    Health -= damage;
+
+                    _lastReceivedDamagesInfo.Add(damage + " blunt");
 
                     break;
                 }
                 case DamageType.Cut:
                 {
-                    Health -= (int)Math.Round(attack.GetDamage(attacker.PhysicalPower) / Math.Sqrt(CutResist));
+                    int damage = (int)Math.Round(attack.GetDamage(attacker.PhysicalPower) / Math.Sqrt(CutResist));
+                    Health -= damage;
+
+                    _lastReceivedDamagesInfo.Add(damage + " cut");
 
                     break;
                 }
                 case DamageType.Piercing:
                 {
-                    Health -= (int)Math.Round(attack.GetDamage(attacker.PhysicalPower) / Math.Sqrt(PiercingResist));
+                    int damage = (int)Math.Round(attack.GetDamage(attacker.PhysicalPower) / Math.Sqrt(PiercingResist));
+                    Health -= damage;
+
+                    _lastReceivedDamagesInfo.Add(damage + " piercing");
 
                     break;
                 }
