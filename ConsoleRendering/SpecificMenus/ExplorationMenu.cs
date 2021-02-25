@@ -8,7 +8,7 @@ namespace ConsoleTextRPG.ConsoleRendering
         private Player _player;
 
         private bool? _fightWasWon = null;
-        private int _winStreak;
+        public int WinStreak { get; private set; }
 
         public ExplorationMenu(Player player)
         {
@@ -28,7 +28,7 @@ namespace ConsoleTextRPG.ConsoleRendering
                 {
                     _fightWasWon = true;
 
-                    _winStreak++;
+                    WinStreak++;
                 }
                 else
                 {
@@ -54,7 +54,7 @@ namespace ConsoleTextRPG.ConsoleRendering
                     }
                     else
                     {
-                        _winStreak = 0;
+                        WinStreak = 0;
 
                         _player.FullRevive();
                     }
@@ -84,7 +84,7 @@ namespace ConsoleTextRPG.ConsoleRendering
 
             if (_fightWasWon == null)
             {
-                if (_winStreak > 0) str += $"Your winstreak is { _winStreak } wins long. You have { _player.Health } health and { _player.Mana } mana left.\n\n";
+                if (WinStreak > 0) str += $"Your winstreak is { WinStreak } wins long. You have { _player.Health } health and { _player.Mana } mana left.\n\n";
                 str += "Press [Space] to enter random fight.";
             }
             else

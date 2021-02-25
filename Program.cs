@@ -6,12 +6,13 @@ using ConsoleTextRPG.Characters;
 using ConsoleTextRPG.Skills;
 using ConsoleTextRPG.ConsoleRendering;
 using ConsoleTextRPG.GameEvents;
+using Controllers;
 
 namespace ConsoleTextRPG
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Rendering.BeginRenderLoop();
 
@@ -23,6 +24,32 @@ namespace ConsoleTextRPG
             ExplorationMenu exploration = new ExplorationMenu(player);
 
             Rendering.SetActiveMenu(exploration);
+
+            InstantiateDiscord(exploration, player);
+        }
+
+        private static void InstantiateDiscord(ExplorationMenu exploration, Player player)
+        {
+            DiscordController.CreateDiscord();
+
+            while (true)
+            {
+                int lastWinStreak = exploration.WinStreak;
+                int lastPlayerHealth = player.Health;
+
+                if (lastWinStreak > 0)
+                {
+                    DiscordController.SetStatus("Win streak is " + lastWinStreak + " wins long", "Player has " + lastPlayerHealth + " health left");
+                }
+                else
+                {
+                    DiscordController.SetStatus("Player has " + lastPlayerHealth + " health left");
+                }
+
+                DiscordController.RunCallbacks();
+
+                Thread.Sleep(100);
+            }
         }
     }
 }
