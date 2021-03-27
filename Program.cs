@@ -22,6 +22,8 @@ namespace ConsoleTextRPG
             player.Skills.Add(AbilityInfo.Generate(10));
 
             ExplorationMenu exploration = new ExplorationMenu(player);
+            ExplorationMenu exploration2 = new ExplorationMenu(player);
+            bool a = exploration == exploration2;
 
             Rendering.SetActiveMenu(exploration);
 
