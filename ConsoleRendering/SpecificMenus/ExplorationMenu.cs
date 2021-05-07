@@ -69,7 +69,7 @@ namespace ConsoleTextRPG.ConsoleRendering
             Random rng = new Random();
 
             int averageLevel = (int)Math.Round(_player.GetAverageLevel() / 1.66f);
-            RandomEnemy enemy = RandomEnemy.Generate(rng.Next(averageLevel - 1, averageLevel + 2));
+            RandomEnemy enemy = RandomEnemy.Generate(2);//RandomEnemy enemy = RandomEnemy.Generate(rng.Next(averageLevel - 1, averageLevel + 2));
 
             _player.EnterFight();
             enemy.EnterFight();

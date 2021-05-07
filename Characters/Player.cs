@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ConsoleTextRPG.ConsoleRendering;
+using ConsoleTextRPG.Items;
 using ConsoleTextRPG.Skills;
 
 namespace ConsoleTextRPG.Characters
@@ -45,6 +46,8 @@ namespace ConsoleTextRPG.Characters
         public int NextSelectedSkillToUse { get; set; } = -1;
 
         private Character _lastTarget = null;
+
+        public List<Item> Items { get; private set; }
 
         /// <summary>
         /// Creates a player with certain stats.

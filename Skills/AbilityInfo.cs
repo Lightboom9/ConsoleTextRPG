@@ -1,11 +1,25 @@
 ﻿using System;
+using ConsoleTextRPG.Characters;
+using ConsoleTextRPG.Drop;
 
 namespace ConsoleTextRPG.Skills
 {
-    public class AbilityInfo
+    public class AbilityInfo : IDroppable
     {
         public string Name { get; private set; }
         public string Description { get; private set; }
+
+        public string GetDropDescription(Player player)
+        {
+            return "New skill: " + Name.ToLower() + ". " + player.GetDescription(this);
+        }
+
+        public int DropWeight => 70;
+
+        public void ApplyToPlayer(Player player)
+        {
+            player.Skills.Add(this);
+        }
 
         public AbilityAttack[] Attacks { get; private set; }
         public int Healing { get; private set; }

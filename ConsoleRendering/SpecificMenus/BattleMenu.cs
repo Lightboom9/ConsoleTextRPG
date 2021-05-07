@@ -43,7 +43,6 @@ namespace ConsoleTextRPG.ConsoleRendering
 
                 SkillSelectionMenu menu = new SkillSelectionMenu(this, player);
                 HandleControl(menu);
-                //Rendering.SetActiveMenu(menu);
             };
 
             player.OnTurnEnd = EnemyTurn;
