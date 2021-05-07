@@ -47,7 +47,7 @@ namespace ConsoleTextRPG.Characters
 
         private Character _lastTarget = null;
 
-        public List<Item> Items { get; private set; }
+        public List<Item> Items { get; private set; } = new List<Item>();
 
         /// <summary>
         /// Creates a player with certain stats.
@@ -115,6 +115,19 @@ namespace ConsoleTextRPG.Characters
             Endurance = BaseEndurance;
             Wisdom = BaseWisdom;
             Wits = BaseWits;
+
+            foreach (var item in Items)
+            {
+                if (item is IEquippable equippable && equippable.Equipped)
+                {
+                    Strength += equippable.StrengthBonus;
+                    Agility += equippable.AgilityBonus;
+                    Intelligence += equippable.IntelligenceBonus;
+                    Endurance += equippable.EnduranceBonus;
+                    Wisdom += equippable.WisdomBonus;
+                    Wits += equippable.WitsBonus;
+                }
+            }
         }
 
         public void UseSelectedSkill(Character target)

@@ -50,9 +50,6 @@ namespace ConsoleTextRPG.Drop
                     {
                         // Item
                         drop = Item.Generate(player.GetAverageLevel());
-                        
-                        // Test
-                        continue;
 
                         break;
                     }
@@ -76,11 +73,13 @@ namespace ConsoleTextRPG.Drop
                 if (currentWeight >= selectedWeight)
                 {
                     _drops.Remove(drop);
+                    _totalWeight -= drop.DropWeight;
+
                     return drop;
                 }
             }
 
-            return null;
+            throw new SystemException("Should not happen. Total weight: " + _totalWeight + ", selected weight: " + selectedWeight + ", current weight: " + currentWeight + ".\n");
         }
 
         public IDroppable[] GetRandomDrops(int amount)

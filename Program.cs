@@ -27,7 +27,7 @@ namespace ConsoleTextRPG
 
             Rendering.SetActiveMenu(exploration);
 
-            InstantiateDiscord(exploration, player);
+            // InstantiateDiscord(exploration, player);
         }
 
         private static void InstantiateDiscord(ExplorationMenu exploration, Player player)

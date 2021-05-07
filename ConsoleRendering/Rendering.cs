@@ -35,7 +35,12 @@ namespace ConsoleTextRPG.ConsoleRendering
 
                     toRender = toRender.Replace("\n", "                \n");
 
-                    //Console.Clear();
+                    if (_currentMenu.FullRerenderRequested)
+                    {
+                        Console.Clear();
+
+                        _currentMenu.FullRerenderRequestComplete();
+                    }
                     Console.SetCursorPosition(0, 0);
                     Console.Write(toRender);
 

@@ -7,6 +7,7 @@ namespace ConsoleTextRPG.Items
     public abstract class Item : IComparable<Item>, ICloneable, IDroppable
     {
         public string Name { get; protected set; }
+        public string Description { get; protected set; }
         public virtual int DropWeight => 30;
 
         public void ApplyToPlayer(Player player)
@@ -14,9 +15,9 @@ namespace ConsoleTextRPG.Items
             player.Items.Add(this);
         }
 
-        public string GetDropDescription(Player player)
+        public virtual string GetDropDescription(Player player)
         {
-            return "Item";
+            return "DEFAULT_DESCRIPTION";
         }
 
         public virtual int CompareTo(Item item)
@@ -31,10 +32,17 @@ namespace ConsoleTextRPG.Items
             return MemberwiseClone();
         }
 
-        protected abstract Item GenerateItem();
-
         public static Item Generate(int level)
         {
+            Random rng = new Random();
+
+            switch (rng.Next(0, 3))
+            {
+                case 0: return new Sword(level);
+                case 1: return new Crystal(level);
+                case 2: return new HealthPotion(level);
+            }
+
             return null;
         }
     }

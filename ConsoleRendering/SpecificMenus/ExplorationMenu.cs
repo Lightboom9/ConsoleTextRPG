@@ -62,6 +62,13 @@ namespace ConsoleTextRPG.ConsoleRendering
                     _fightWasWon = null;
                 }
             };
+            Actions[ConsoleKey.Tab] = () =>
+            {
+                if (player.Items.Count == 0) return;
+
+                ItemsMenu menu = new ItemsMenu(player);
+                HandleControl(menu);
+            };
         }
 
         private void StartRandomFight()
@@ -86,6 +93,7 @@ namespace ConsoleTextRPG.ConsoleRendering
             {
                 if (WinStreak > 0) str += $"Your winstreak is { WinStreak } wins long. You have { _player.Health } health and { _player.Mana } mana left.\n\n";
                 str += "Press [Space] to enter random fight.";
+                if (_player.Items.Count > 0) str += "\nPress [Tab] to show your inventory.";
             }
             else
             {

@@ -16,7 +16,7 @@ namespace ConsoleTextRPG.ConsoleRendering
         public RandomBonusMenu(Player player)
         {
             Random rng = new Random();
-            int amount = rng.Next(2, 6);
+            int amount = rng.Next(4, 8);
 
             WeightedDropTable table = new WeightedDropTable(player);
             for (int i = 0; i < amount; i++)

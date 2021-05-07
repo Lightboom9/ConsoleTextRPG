@@ -28,6 +28,13 @@ namespace ConsoleTextRPG.ConsoleRendering
             _parent = parent;
         }
 
+        public bool FullRerenderRequested { get; protected set; }
+
+        public void FullRerenderRequestComplete()
+        {
+            FullRerenderRequested = false;
+        }
+
         public virtual string Render()
         {
             return null;
