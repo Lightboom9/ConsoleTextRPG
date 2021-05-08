@@ -7,7 +7,7 @@ namespace ConsoleTextRPG.Drop.SpecificDrops
 {
     public class ClonePotion : IDroppable
     {
-        public int DropWeight => 1500;
+        public int DropWeight => 15;
 
         public string GetDropDescription(Player player)
         {

@@ -6,7 +6,7 @@ namespace ConsoleTextRPG.Items
     public class HealthPotion : Item, IConsumable, ICloneable, IComparable<HealthPotion>
     {
         private int _healthRestored;
-        public override int DropWeight => 4000;
+        public override int DropWeight => 40;
 
         public int HealthRestored
         {
