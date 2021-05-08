@@ -16,14 +16,14 @@ namespace ConsoleTextRPG.Drop
 
         public WeightedDropTable(Player player)
         {
-            _drops = new List<IDroppable>(100);
+            _drops = new List<IDroppable>(150);
             _rng = new Random();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 150; i++)
             {
                 IDroppable drop = null;
 
-                switch (_rng.Next(0, 4))
+                switch (_rng.Next(0, 5))
                 {
                     case 0:
                     {
@@ -53,7 +53,13 @@ namespace ConsoleTextRPG.Drop
 
                         break;
                     }
-                    default: throw new Exception("Wtf");
+                    case 4:
+                    {
+                        // Clone potion
+                        drop = new ClonePotion();
+
+                        break;
+                    }
                 }
 
                 _drops.Add(drop);
